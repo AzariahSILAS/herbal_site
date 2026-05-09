@@ -1,65 +1,124 @@
-import Image from "next/image";
+const newestPosts = [
+  {
+    title: "Calming Evening Tea Blend",
+    description: "Learn how to make a relaxing herbal tea blend for winding down.",
+    image: "/placeholder.jpg",
+  },
+  {
+    title: "Immune Support Herbal Mix",
+    description: "A simple herbal recipe focused on everyday wellness support.",
+    image: "/placeholder.jpg",
+  },
+  {
+    title: "Beginner Guide to Herbal Infusions",
+    description: "Understand the basics of steeping, timing, and choosing herbs.",
+    image: "/placeholder.jpg",
+  },
+];
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div>
+      <section className="bg-gradient-to-b from-green-50 to-stone-50">
+        <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 md:grid-cols-2 md:items-center">
+          <div>
+            <p className="mb-4 text-sm font-semibold uppercase tracking-wide text-green-700">
+              Herbal tutorials and wellness education
+            </p>
+
+            <h1 className="mb-6 text-4xl font-bold tracking-tight text-stone-950 md:text-6xl">
+              Learn natural herbal recipes from someone who lives it.
+            </h1>
+
+            <p className="mb-8 text-lg leading-8 text-stone-700">
+              Get access to step-by-step videos, photos, and written tutorials
+              teaching you how to prepare teas, herbal blends, and wellness
+              recipes at home.
+            </p>
+
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <a
+                href="/signup"
+                className="rounded-full bg-green-700 px-6 py-3 text-center font-semibold text-white hover:bg-green-800"
+              >
+                Get Started
+              </a>
+
+              <a
+                href="/catalog"
+                className="rounded-full border border-stone-300 px-6 py-3 text-center font-semibold hover:bg-white"
+              >
+                View Catalog
+              </a>
+            </div>
+          </div>
+
+          <div className="rounded-3xl bg-white p-6 shadow-sm">
+            <div className="aspect-video rounded-2xl bg-green-100"></div>
+            <div className="mt-6">
+              <h2 className="text-2xl font-bold">Meet your teacher</h2>
+              <p className="mt-3 leading-7 text-stone-700">
+                This library is built around practical knowledge, simple
+                ingredients, and easy-to-follow tutorials for people who want to
+                learn herbal wellness at home.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-6 py-16">
+        <div className="mb-10 flex items-end justify-between gap-6">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wide text-green-700">
+              Newest posts
+            </p>
+            <h2 className="mt-2 text-3xl font-bold">Latest tutorials</h2>
+          </div>
+
+          <a href="/catalog" className="font-semibold text-green-700 hover:text-green-800">
+            See all posts →
+          </a>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-3">
+          {newestPosts.map((post) => (
+            <article
+              key={post.title}
+              className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+              <div className="aspect-video bg-green-100"></div>
+
+              <div className="p-5">
+                <h3 className="text-xl font-bold">{post.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-stone-600">
+                  {post.description}
+                </p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="bg-green-900 px-6 py-16 text-white">
+        <div className="mx-auto max-w-4xl text-center">
+          <h2 className="text-3xl font-bold md:text-4xl">
+            Start learning herbal wellness today.
+          </h2>
+
+          <p className="mx-auto mt-4 max-w-2xl text-green-50">
+            Subscribe to unlock the full catalog of video, photo, and written
+            tutorials.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
+
           <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/signup"
+            className="mt-8 inline-block rounded-full bg-white px-6 py-3 font-semibold text-green-900 hover:bg-green-50"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
+            Get Started
           </a>
         </div>
-      </main>
+      </section>
     </div>
   );
 }
