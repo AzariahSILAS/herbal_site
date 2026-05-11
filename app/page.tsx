@@ -46,7 +46,7 @@ export default function HomePage() {
 
               <a
                 href="/catalog"
-                className="rounded-full border border-stone-300 px-6 py-3 text-center font-semibold hover:bg-white"
+                className="rounded-full border border-stone-300 px-6 py-3 text-center font-semibold hover:bg-white text-gray-700"
               >
                 View Catalog
               </a>
@@ -56,7 +56,7 @@ export default function HomePage() {
           <div className="rounded-3xl bg-white p-6 shadow-sm">
             <div className="aspect-video rounded-2xl bg-green-100"></div>
             <div className="mt-6">
-              <h2 className="text-2xl font-bold">Meet your teacher</h2>
+              <h2 className="text-2xl text-gray-700 font-bold">Meet your teacher</h2>
               <p className="mt-3 leading-7 text-stone-700">
                 This library is built around practical knowledge, simple
                 ingredients, and easy-to-follow tutorials for people who want to
@@ -67,13 +67,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 py-16">
+      <section className="mx-auto max-w-6xl px-6 py-16 bg-green-100">
         <div className="mb-10 flex items-end justify-between gap-6">
           <div>
             <p className="text-sm font-semibold uppercase tracking-wide text-green-700">
               Newest posts
             </p>
-            <h2 className="mt-2 text-3xl font-bold">Latest tutorials</h2>
+            <h2 className="mt-2 text-3xl font-bold text-gray-700">Latest tutorials</h2>
           </div>
 
           <a href="/catalog" className="font-semibold text-green-700 hover:text-green-800">
@@ -81,11 +81,11 @@ export default function HomePage() {
           </a>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-3 ">
           {newestPosts.map((post) => (
             <article
               key={post.title}
-              className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm"
+              className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg/30 text-gray-700"
             >
               <div className="aspect-video bg-green-100"></div>
 

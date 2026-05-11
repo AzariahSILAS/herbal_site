@@ -15,7 +15,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="min-h-screen bg-stone-50 text-stone-900">
         <header className="border-b border-stone-200 bg-white">
-          <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+          <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 text-gray-700">
             <a href="/" className="text-xl font-bold">
               Herbal Wellness
             </a>
