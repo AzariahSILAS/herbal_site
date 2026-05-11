@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/app/lib/supabaseClient";
 
 type Post = {
@@ -14,11 +15,27 @@ type Post = {
 };
 
 export default function AdminPage() {
+  const router = useRouter();
+
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
+  const [checkingUser, setCheckingUser] = useState(true);
+  const [userEmail, setUserEmail] = useState("");
 
   useEffect(() => {
-    async function getPosts() {
+    async function checkUserAndGetPosts() {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        router.push("/login");
+        return;
+      }
+
+      setUserEmail(user.email || "");
+      setCheckingUser(false);
+
       const { data, error } = await supabase
         .from("posts")
         .select("id, title, slug, description, is_published, created_at")
@@ -33,23 +50,48 @@ export default function AdminPage() {
       setLoading(false);
     }
 
-    getPosts();
-  }, []);
+    checkUserAndGetPosts();
+  }, [router]);
+
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    router.push("/login");
+    router.refresh();
+  }
+
+  if (checkingUser) {
+    return (
+      <section className="mx-auto max-w-6xl px-6 py-12">
+        <p>Checking login...</p>
+      </section>
+    );
+  }
 
   return (
     <section className="mx-auto max-w-6xl px-6 py-12">
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-8 flex items-center justify-between gap-6">
         <div>
           <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-          <p className="mt-2 text-stone-600">Manage your tutorial posts.</p>
+          <p className="mt-2 text-stone-600">
+            Logged in as {userEmail}
+          </p>
         </div>
 
-        <Link
-          href="/admin/posts/new"
-          className="rounded-full bg-green-700 px-5 py-3 font-semibold text-white hover:bg-green-800"
-        >
-          Create Post
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/admin/posts/new"
+            className="rounded-full bg-green-700 px-5 py-3 font-semibold text-white hover:bg-green-800"
+          >
+            Create Post
+          </Link>
+
+          <button
+            onClick={handleLogout}
+            className="rounded-full border border-stone-300 px-5 py-3 font-semibold hover:bg-white"
+          >
+            Log Out
+          </button>
+        </div>
       </div>
 
       {loading ? (
@@ -63,12 +105,11 @@ export default function AdminPage() {
           {posts.map((post) => (
             <div
               key={post.id}
-              className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm"
+              className="rounded-2xl border border-stone-500 bg-white p-5 shadow-sm"
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <h2 className="text-xl font-bold">{post.title}</h2>
-                  <p className="mt-1 text-sm text-stone-500">/{post.slug}</p>
+                  <h2 className="text-xl font-bold text-stone-500">{post.title}</h2>
                   <p className="mt-3 text-stone-600">{post.description}</p>
                 </div>
 
