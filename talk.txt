@@ -1,0 +1,1 @@
+I think im going to remove the log in from the header and just make it saye get started and that btn will route you to log in/signup
