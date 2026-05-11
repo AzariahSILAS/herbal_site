@@ -1,22 +1,40 @@
-const newestPosts = [
-  {
-    title: "Calming Evening Tea Blend",
-    description: "Learn how to make a relaxing herbal tea blend for winding down.",
-    image: "/placeholder.jpg",
-  },
-  {
-    title: "Immune Support Herbal Mix",
-    description: "A simple herbal recipe focused on everyday wellness support.",
-    image: "/placeholder.jpg",
-  },
-  {
-    title: "Beginner Guide to Herbal Infusions",
-    description: "Understand the basics of steeping, timing, and choosing herbs.",
-    image: "/placeholder.jpg",
-  },
-];
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { supabase } from "@/app/lib/supabaseClient";
+
+type Post = {
+  id: string;
+  title: string;
+  slug: string;
+  description: string | null;
+  thumbnail_url: string | null;
+  created_at: string;
+};
 
 export default function HomePage() {
+  const [newestPosts, setNewestPosts] = useState<Post[]>([]);
+
+  useEffect(() => {
+    async function getNewestPosts() {
+      const { data, error } = await supabase
+        .from("posts")
+        .select("id, title, slug, description, thumbnail_url, created_at")
+        .eq("is_published", true)
+        .order("created_at", { ascending: false })
+        .limit(3);
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      setNewestPosts(data || []);
+    }
+
+    getNewestPosts();
+  }, []);
   return (
     <div>
       <section className="bg-gradient-to-b from-green-50 to-stone-50">
@@ -56,7 +74,9 @@ export default function HomePage() {
           <div className="rounded-3xl bg-white p-6 shadow-sm">
             <div className="aspect-video rounded-2xl bg-green-100"></div>
             <div className="mt-6">
-              <h2 className="text-2xl text-gray-700 font-bold">Meet your teacher</h2>
+              <h2 className="text-2xl text-gray-700 font-bold">
+                Meet your teacher
+              </h2>
               <p className="mt-3 leading-7 text-stone-700">
                 This library is built around practical knowledge, simple
                 ingredients, and easy-to-follow tutorials for people who want to
@@ -73,29 +93,50 @@ export default function HomePage() {
             <p className="text-sm font-semibold uppercase tracking-wide text-green-700">
               Newest posts
             </p>
-            <h2 className="mt-2 text-3xl font-bold text-gray-700">Latest tutorials</h2>
+            <h2 className="mt-2 text-3xl font-bold text-gray-700">
+              Latest tutorials
+            </h2>
           </div>
 
-          <a href="/catalog" className="font-semibold text-green-700 hover:text-green-800">
+          <Link
+            href="/catalog"
+            className="font-semibold text-green-700 hover:text-green-800"
+          >
             See all posts →
-          </a>
+          </Link>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3 ">
+        <div className="grid gap-6 md:grid-cols-3">
           {newestPosts.map((post) => (
-            <article
-              key={post.title}
-              className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg/30 text-gray-700"
+            <Link
+              href={`/post/${post.slug}`}
+              key={post.id}
+              className="overflow-hidden rounded-2xl border border-gray-200 bg-white text-gray-700 shadow-lg/30 transition hover:-translate-y-1 hover:shadow-lg"
             >
-              <div className="aspect-video bg-green-100"></div>
+              {post.thumbnail_url ? (
+                <img
+                  src={post.thumbnail_url}
+                  alt={post.title}
+                  className="aspect-video w-full object-cover"
+                />
+              ) : (
+                <div className="aspect-video bg-green-100"></div>
+              )}
 
               <div className="p-5">
                 <h3 className="text-xl font-bold">{post.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-stone-600">
-                  {post.description}
+
+                {post.description && (
+                  <p className="mt-3 text-sm leading-6 text-stone-600">
+                    {post.description}
+                  </p>
+                )}
+
+                <p className="mt-4 text-sm font-semibold text-green-700">
+                  View tutorial →
                 </p>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </section>
