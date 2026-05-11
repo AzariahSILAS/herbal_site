@@ -67,6 +67,32 @@ export default function AdminPage() {
     );
   }
 
+  async function handleDeletePost(postId: string) {
+    const confirmed = confirm("Are you sure you want to delete this post?");
+
+    if (!confirmed) return;
+
+    const { error } = await supabase.from("posts").delete().eq("id", postId);
+
+    if (error) {
+      console.error(error);
+      alert("Could not delete post.");
+      return;
+    }
+
+    setPosts((currentPosts) =>
+      currentPosts.filter((post) => post.id !== postId)
+    );
+  }
+
+  if (checkingUser) {
+    return (
+      <section className="mx-auto max-w-6xl px-6 py-12">
+        <p>Checking login...</p>
+      </section>
+    );
+  }
+
   return (
     <section className="mx-auto max-w-6xl px-6 py-12">
       <div className="mb-8 flex items-center justify-between gap-6">
@@ -112,10 +138,18 @@ export default function AdminPage() {
                   <h2 className="text-xl font-bold text-stone-500">{post.title}</h2>
                   <p className="mt-3 text-stone-600">{post.description}</p>
                 </div>
-
-                <span className="rounded-full bg-stone-100 px-3 py-1 text-sm">
+                <div className=" flex w-3xs justify-between">
+                  <span className="rounded-full bg-stone-500 px-3 py-1 text-sm content-center ">
                   {post.is_published ? "Published" : "Draft"}
                 </span>
+                <button
+                    onClick={() => handleDeletePost(post.id)}
+                    className="rounded-full bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700"
+                  >
+                    Delete
+                  </button>
+                </div>
+                
               </div>
             </div>
           ))}
